@@ -2,16 +2,27 @@ $(document).ready(function() {
     // Please write your JS in scripts.js
     console.log('Login ready');
     const apiRoot = 'http://localhost/api';
+    const apiAuth = 'http://localhost/auth';
 
-  const getXSFR = () => {
-    let xsrfCookie = document.cookie.split(';').find((c) => {
-      const keyValue = c.split('=');
-      if (keyValue[0] === 'XSRF-TOKEN') {
-        return c;
+    const getXSFR = () => {
+      let xsrfCookie = document.cookie.split(';').find((c) => {
+        const keyValue = c.split('=');
+        if (keyValue[0] === 'XSRF-TOKEN') {
+          return c;
+        }
+      });
+      return xsrfCookie.split('=')[1].replace('%3D', '');
+    }
+
+    const fetchOptions = {
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getXSFR(),
+        mode: 'cors',
       }
-    });
-    return xsrfCookie.split('=')[1].replace('%3D', '');
-  }
+    }
 
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -298,6 +309,9 @@ $(document).ready(function() {
           })
         });
         const data = await response.json();
+        // append the new comment to the bottom of the parent component
+        this.$emit('addComment', data);
+
 
       },
     },
@@ -330,11 +344,13 @@ $(document).ready(function() {
     },
     data() {
       return {
-        post: null
+        post: null,
+        user: null
       }
     },
     async mounted() {
       const api = `${apiRoot}/posts/2`;
+      this.getUser();
       const response = await fetch(api, {
         credentials: 'include',
         headers: {
@@ -345,7 +361,25 @@ $(document).ready(function() {
       });
       const post = await response.json();
       this.post = post.data;
-      console.log(this.post);
+    },
+
+    methods: {
+      addComment(comment) {
+        this.post.comments.push(comment);
+      },
+      async getUser() {
+        const api = `${apiRoot}/user`;
+        const response = await fetch(api, {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': getXSFR(),
+          },
+        });
+        const user = await response.json();
+        this.user = user;
+      }
     }
   }
 

@@ -125,7 +125,7 @@
 
     <!-- Detailed Post  -->
     <template id="viewPost">
-       <div class="display-container">
+       <div class="display-container" v-on:addComment="addComment">
            <post v-bind:post="post" detailed="true"></post>
            <work v-bind:post-id="post ? post.id : ''"></work>
            <div class="comments" v-if="post">
