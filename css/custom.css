@@ -1,0 +1,148 @@
+/* Write your CSS below */
+:root {
+    --brandBlue: #5AC8E0;
+    --fontBold: 'SharpSansBold';
+    --fontRegular: 'SharpSansMedium';
+}
+
+@font-face {
+    font-family: 'SharpSansBold';
+    src: url("/assets_from_client/fonts/SharpSans-No1-Black.otf");
+}
+
+@font-face {
+    font-family: 'SharpSansMedium';
+    src: url("/assets_from_client/fonts/SharpSans-No1-Medium.otf");
+}
+
+html {
+    background: url("/assets_from_client/assets/login-bg.jpg");
+}
+
+body {
+    max-width: 1440px;
+    display: flex;
+    justify-content: center;
+}
+
+#app {
+    background-color: black;
+    color: white;
+    font-family: var(--fontRegular);
+    margin-top: 5rem;
+}
+
+/*  Sizing Styles */
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.center {
+    grid-column-start: 2;
+    grid-column-end: 12;
+}
+
+.display-container {
+    position: relative;
+    border: 1px solid var(--brandBlue);
+    padding: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* due to lack of scss, due to lack of build */
+.form-group > input,
+.form-group > textarea {
+    padding: .5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Input utility */
+/* Uneven top / bottom margin is intentional based on mockup. */
+.btn-bold {
+    display: flex;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    margin: 0 auto 1rem auto;
+    text-align: center;
+}
+
+.btn-tab {
+    padding: 1rem 2rem;
+    text-align: center;
+    border-radius: 10% 10% 0 0;
+    color: black;
+    background: #e5e0e0;
+}
+
+/* Text Utility classes */
+.font-bold {
+    font-family: var(--fontBold);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Component Styles */
+.banner {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+}
+
+/* Kicking it old school. Triangle courtesy of http://apps.eky.hk/css-triangle-generator/*/
+.triangle-bottomright {
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 75px 150px;
+    border-color: transparent transparent var(--brandBlue) transparent;
+}
+
+.color-primary {
+    color: white;
+    background: var(--brandBlue);
+}
+
+.color-secondary {
+    color: black;
+    background: #e5e0e0;
+}
+
+/** Post Styles **/
+.posts {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--brandBlue);
+    padding: .5rem;
+    margin-bottom: 1.5rem;
+}
+
+.post-title {
+    margin: .5rem 0;
+}
+
+.post-body {
+
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: .75rem;
+}
+
+.comments {
+    padding: .5rem;
+}
+
+.comment {
+    border-top: 1px solid var(--brandBlue);
+    padding: .25rem;
+}

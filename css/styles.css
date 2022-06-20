@@ -1,0 +1,24 @@
+/* Please write your CSS in custom.css */
+
+* {
+  transition: all 250ms ease-in-out;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Baby';
+  src: url('../fonts/Baby.ttf');
+  font-weight: normal;
+}
+
+html,
+body {
+  font-family: "Baby", "Courier", "Verdana";
+}
+
+.invalid {
+  border: 1px solid red;
+  outline-color: red;
+}
+
+/* --------- */
