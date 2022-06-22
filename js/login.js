@@ -52,6 +52,7 @@ $(document).ready(function() {
           passwordCheck: '',
         },
         valid: true,
+        validPasswordCheck: true,
       };
 
     },
@@ -138,20 +139,26 @@ $(document).ready(function() {
 
       },
       setComponent,
+      validatePasswordCheck() {
+        this.validPasswordCheck = this.isValid('passwordCheck')
+      }
     },
 
-    mounted() {
-      // Bonus: Password Validation
-      // Can this be refactored?
-      // let element = this.$el.querySelector('#passwordcheck');
-      // element.addEventListener('blur', () => {
-      //   if (!this.isValid('passwordCheck')) {
-      //     element.classList.add('invalid');
-      //   } else {
-      //     element.classList.remove('invalid');
-      //   }
-      // });
-    },
+    //   Refactored: Using a @blur on the password check selector and v-bind:class to dynamically add the invalid class
+    //   saves manually modifying the dom as well as an event listener
+    // mounted() {
+    //   // Bonus: Password Validation
+    //   // Can this be refactored?
+    //
+    //   let element = this.$el.querySelector('#passwordcheck');
+    //   element.addEventListener('blur', () => {
+    //     if (!this.isValid('passwordCheck')) {
+    //       element.classList.add('invalid');
+    //     } else {
+    //       element.classList.remove('invalid');
+    //     }
+    //   });
+    // },
   };
 
   const signInComponent = {

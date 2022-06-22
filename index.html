@@ -38,11 +38,6 @@
             </keep-alive>
         </transition>
     </div>
-    <!-- Login / Register Toggles -->
-    <template id="actions">
-
-    </template>
-
   
     <!-- Sign Up  -->
     <template id="signUp">
@@ -68,7 +63,7 @@
                </div>
                <div class="form-group">
                    <label for="passwordcheck">Confirm Password</label>
-                   <input required type="password" v-model='user.passwordCheck' placeholder="confirm password" id='passwordcheck' v-bind:class="[ user.password != user.passwordCheck ? 'invalid' : 'valid' ]">
+                   <input @blur="validatePasswordCheck" required type="password" v-model='user.passwordCheck' placeholder="confirm password" id='passwordcheck' v-bind:class="{invalid: !validPasswordCheck}">
                </div>
                <input class="btn-bold font-bold" type="submit" :disabled='!isFormValid' value='Register'>
                <div class="triangle-bottomright"></div>
