@@ -2,7 +2,6 @@ $(document).ready(function() {
   // Please write your JS in scripts.js
   console.log('Login ready');
   const apiRoot = 'http://localhost/api';
-  const apiAuth = 'http://localhost/auth';
 
   // make sure to include cross site forgery token in every request after we are authenticated
   const getXSFR = () => {
@@ -15,7 +14,8 @@ $(document).ready(function() {
         return c;
       }
     });
-    return xsrfCookie.split('=')[1].replace('%3D', '');
+    // remove the encoded "=" that is showing up for some reason
+    return xsrfCookie.split('=')[1].replace('%3D', '').trim();
   };
 
   const fetchOptions = {
@@ -23,7 +23,7 @@ $(document).ready(function() {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': getXSFR(),
+      'X-XSRF-TOKEN':getXSFR(),
       mode: 'cors',
     },
   };
@@ -115,7 +115,14 @@ $(document).ready(function() {
         });
 
         const url = `${apiRoot}/users`;
-        const response = await fetch(url, {...fetchOptions,
+        const response = await fetch(url, {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN':getXSFR(),
+            mode: 'cors',
+          },
           method: 'POST',
           body: JSON.stringify(user),
         });
@@ -171,29 +178,14 @@ $(document).ready(function() {
             'Content-Type': 'application/json',
           },
         });
-        let xsrfCookie = document.cookie.split(';').find((c) => {
-          const keyValue = c.split('=');
-          if (keyValue[0] === 'XSRF-TOKEN') {
-            return c;
-          }
-        });
-        const url = 'http://localhost/api/auth/login';
-        // not sure why sanctum is including an = character, but removing the encoded equilvalent from here
-        let xsrf = xsrfCookie.split('=')[1].replace('%3D', '');
-        const response = await fetch(url, {
+
+        const url = `${apiRoot}/auth/login`;
+        const response = await fetch(url, {...fetchOptions,
           method: 'POST',
           body: JSON.stringify(formvalue),
-          credentials: 'include',
-          mode: 'cors',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Cache': 'no-cache',
-            'X-XSRF-TOKEN': xsrf,
-          },
         });
         const data = await response.json();
-        // stash the user into global state so we can check if they are authenticated
+        // stash the user into global state, so we can check if they are authenticated
         app.user = data.user;
 
         this.$emit('signin-form', {
@@ -268,14 +260,13 @@ $(document).ready(function() {
       };
     },
     async mounted() {
-      const params = new URLSearchParams(window.location.search);
       // if editing, get the data for the post
-      this.action = params.get('action');
+      this.action = this.$root.action;
+      const postId = this.$root.id;
+
       if (this.action === 'edit') {
-        const api = `http://localhost/api/posts/${params.get('id')}`;
-        const response = await fetch(api, {
-          credentials: 'include',
-        });
+        const api = `${apiRoot}/posts/${postId}`;
+        const response = await fetch(api, fetchOptions);
         const post = await response.json();
         this.title = post.data.title;
         this.body = post.data.body;
@@ -289,14 +280,14 @@ $(document).ready(function() {
         if (this.action === 'edit') {
           api = api.concat(`/${this.id}`);
         }
-        const response = await fetch(api, {
-          method: this.action === 'edit' ? 'PUT' : 'POST',
-          credentials: 'include',
+        const response = await fetch(api, {credentials: 'include',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'X-XSRF-TOKEN': getXSFR(),
+            'X-XSRF-TOKEN':getXSFR(),
+            mode: 'cors',
           },
+          method: this.action === 'edit' ? 'PUT' : 'POST',
           body: JSON.stringify({
             title: this.title,
             body: this.body,
@@ -304,7 +295,6 @@ $(document).ready(function() {
           }),
         });
         const data = await response.json();
-        console.log(data);
       },
       setComponent,
     },
@@ -334,9 +324,7 @@ $(document).ready(function() {
       const commentId = this.$root.id;
       if (this.action === 'edit') {
         const api = `${apiRoot}/comments/${commentId}`;
-        const response = await fetch(api, {
-          credentials: 'include',
-        });
+        const response = await fetch(api, fetchOptions);
         const comment = await response.json();
         this.id = comment.data.id;
         this.body = comment.data.body;
@@ -350,7 +338,14 @@ $(document).ready(function() {
           api = api.concat(`/${this.id}`);
         }
 
-        const response = await fetch(api, {...fetchOptions,
+        const response = await fetch(api, {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN':getXSFR(),
+            mode: 'cors',
+          },
           method: this.action === 'edit' ? 'PUT' : 'POST',
           body: JSON.stringify({
             body: this.body,
@@ -374,14 +369,20 @@ $(document).ready(function() {
     methods: {
       async deleteComment() {
         const api = `${apiRoot}/comments/${this.comment.id}`;
-        const options = {...fetchOptions, method: 'DELETE'};
-        const response = await fetch(api, options);
+        const response = await fetch(api, {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': getXSFR(),
+            mode: 'cors',
+          }
+        });
         // TODO: redirect to all posts
-
       },
       setComponent
     }
-  };
+  }
 
   const postComponent = {
     template: '#post',
@@ -390,7 +391,9 @@ $(document).ready(function() {
     methods: {
       async deletePost() {
         const api = `${apiRoot}/posts/${this.post.id}`;
-        const options = {...fetchOptions, method: 'DELETE'};
+        const options = {...fetchOptions,
+          method: 'DELETE'
+        };
         const response = await fetch(api, options);
         // TODO: redirect to all posts
       },
@@ -415,19 +418,9 @@ $(document).ready(function() {
     async mounted() {
       const postId = this.$root.id;
       const api = `${apiRoot}/posts/${postId}`;
-      const response = await fetch(api, {
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-XSRF-TOKEN': getXSFR(),
-        },
-      });
+      const response = await fetch(api, fetchOptions);
       const post = await response.json();
       this.post = post.data;
-    },
-
-    methods: {
     },
   };
 
@@ -444,21 +437,11 @@ $(document).ready(function() {
     },
     async mounted() {
       const api = `${apiRoot}/posts`;
-      const response = await fetch(api, {
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-XSRF-TOKEN': getXSFR(),
-        },
-      });
+      const response = await fetch(api, fetchOptions);
       const posts = await response.json();
       this.posts = posts.data;
     },
   };
-
-  // const params = new URLSearchParams(window.location.search);
-  // const currentRoute = params.get('route');
 
   const app = new Vue({
     el: '#app',

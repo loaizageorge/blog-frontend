@@ -102,7 +102,7 @@
            <div class="display-container">
                <div>
                    <ul class="ul-normalize">
-                       <li class="posts" v-for="post in posts" key="post.id">
+                       <li class="posts" v-for="post in posts" :key="post.id">
                            <post v-bind:post="post" detailed="false"></post>
                        </li>
                    </ul>
@@ -154,7 +154,7 @@
            <post v-bind:post="post" detailed="true" v-bind:user-id="user ? user.id : ''"></post>
            <work v-bind:post-id="post ? post.id : ''"></work>
            <div class="comments" v-if="post">
-               <div v-for="comment in post.comments" key="comment.id">
+               <div v-for="comment in post.comments" :key="comment.id">
                    <comment v-bind:comment="comment" v-bind:user-id="user ? user.id : ''"></comment>
                </div>
            </div>
