@@ -14,19 +14,19 @@
 </head>
 <body class="container">
     <div class="center" id="app" v-cloak>
-        <h1>Register</h1>
+        <h1 v-if="!user" class="font-bold text-center">{{title}}</h1>
         <div class="actions">
             <div class="display-flex-row" v-if="user">
                 <button class="btn-tab font-bold" @click='logout'>Logout
                 </button>
-                <button class="btn-tab font-bold" @click='setComponent({currentComponent: "posts"})'>View All Posts
+                <button v-bind:class="{'color-primary': currentComponent === 'posts'}" class="btn-tab font-bold" @click='setComponent({currentComponent: "posts"})'>View All Posts
                 </button>
-                <button class="btn-tab font-bold" @click='setComponent({currentComponent: "createPost"})'>Create Post
+                <button v-bind:class="{'color-primary': currentComponent === 'createPost'}" class="btn-tab font-bold" @click='setComponent({currentComponent: "createPost"})'>Create Post
                 </button>
             </div>
             <div class="display-flex-row" v-else>
-            <button class="btn-tab font-bold" @click='setComponent({currentComponent: "signin"})'>Sign In</button>
-            <button class="btn-tab font-bold" @click='setComponent({currentComponent: "register"})'>Register</button>
+            <button v-bind:class="{'color-primary': currentComponent === 'signin'}" class="btn-tab font-bold" @click='setComponent({currentComponent: "signin"})'>Sign In</button>
+            <button v-bind:class="{'color-primary': currentComponent === 'register'}" class="btn-tab font-bold" @click='setComponent({currentComponent: "register"})'>Register</button>
             </div>
 
         </div>
@@ -44,7 +44,7 @@
        <div>
            <form @submit.prevent='onSubmit' ref='form' action="" class='register-form display-container'>
                <img alt="wsj banner" class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
-               <h2 class="font-bold">New Account</h2>
+               <h2 class="font-bold title-center">New Account</h2>
                <div class="form-group">
                    <label for="firstname">First Name</label>
                    <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="first name">
@@ -76,7 +76,7 @@
         <div>
             <form ref='form' @submit.prevent='handleForm' action="" class='signin-form display-container'>
                 <img alt="wsj banner" class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
-                <h2 class="font-bold">Sign In</h2>
+                <h2 class="font-bold title-center">Sign In</h2>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input required v-model='user.email' type="email" id='email' placeholder="email">

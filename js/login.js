@@ -91,9 +91,6 @@ $(document).ready(function() {
         }
 
       },
-      passwordLength(prop) {
-        console.log(prop);
-      },
       resetUser() {
         this.user.firstname = '';
         this.user.lastname = '';
@@ -101,7 +98,7 @@ $(document).ready(function() {
         this.user.password = '';
         this.user.passwordCheck = '';
       },
-      // Catch 401
+
       async onSubmit() {
         let user = Object.assign({}, this.user);
 
@@ -383,7 +380,6 @@ $(document).ready(function() {
             mode: 'cors',
           }
         });
-        // TODO: redirect to all posts
       },
       setComponent
     }
@@ -392,11 +388,18 @@ $(document).ready(function() {
   const postComponent = {
     template: '#post',
     name: 'postComponent',
-    props: ['post', 'detailed', 'userId'],
+    props: ['post', 'userId'],
     methods: {
       async deletePost() {
         const api = `${apiRoot}/posts/${this.post.id}`;
-        const options = {...fetchOptions,
+        const options = {
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN':getXSFR(),
+            mode: 'cors',
+          },
           method: 'DELETE'
         };
         const response = await fetch(api, options);
@@ -465,10 +468,10 @@ $(document).ready(function() {
     name: 'application',
     data() {
       return {
+        title: 'Register',
         feedback: {},
         currentComponent: 'signin',
         // routing
-        currentRoute: '',
         action: '',
         id: '',
         // global variable
@@ -491,17 +494,6 @@ $(document).ready(function() {
         this.setComponent({currentComponent: 'signin'});
       }
     },
-    // computed: {
-    //   ViewComponent() {
-    //     return routes[this.currentRoute] || NotFound;
-    //   },
-    // },
-    //render(h) { return h(this.ViewComponent); },
   });
-
-  window.addEventListener('popstate', () => {
-    app.currentRoute = currentRoute
-  });
-
 });
   

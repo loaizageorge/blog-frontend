@@ -20,13 +20,12 @@ html {
 }
 
 body {
-    max-width: 1440px;
+    max-width: 768px;
     display: flex;
     justify-content: center;
 }
 
 #app {
-    background-color: black;
     color: white;
     font-family: var(--fontRegular);
     margin-top: 5rem;
@@ -35,16 +34,17 @@ body {
 /*  Sizing Styles */
 .container {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .center {
-    grid-column-start: 2;
-    grid-column-end: 12;
+    grid-column-start: 1;
+    grid-column-end: 6;
 }
 
 .display-container {
     position: relative;
+    background-color: black;
     border: 1px solid var(--brandBlue);
     padding: 1rem;
 }
@@ -156,8 +156,8 @@ ul {
     margin: .5rem 0;
 }
 
-.post-body {
-
+.text-center {
+    text-align: center;
 }
 
 .post-footer {
@@ -174,4 +174,46 @@ ul {
     border-top: 1px solid var(--brandBlue);
     padding: .25rem;
     margin: .5rem 0;
+}
+
+/* Desktop Styling */
+@media screen and (min-width: 768px) {
+    .container {
+        display: block;
+        margin: 0 auto;
+    }
+    .banner {
+        width: 33%;
+        display: flex;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .form-group > label {
+        display: flex;
+        flex: 1;
+        margin-top: .5rem;
+    }
+    .form-group > input {
+        display: flex;
+        flex: 2;
+    }
+
+    .form-group > textarea {
+        display: flex;
+        flex: 2;
+        width: 100%;
+        height: 250px;
+    }
+
+    .title-center {
+        width: 50%;
+        margin: 2rem auto;
+    }
 }
