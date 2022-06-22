@@ -1,4 +1,6 @@
-### Technical Review  
+# Notes
+My framework of choice is React, but I figured I'd take the plunge and complete the rest of this project in Vue (which I have no experience with). Working without a build step was very refreshing, but did make it difficult to follow along with tutorials, where they were leveraging files with the .vue extension. 2 things I wasn't able to figure out: Emit and Importing. As such there isn't any live reloading and everything lives in the one login.js file. Overall it was nice to get my hands dirty with something new under some pressure. The permission system isn't complete, but the backend makes sure that only the user that created the comment/post can update/delete the respective item. Desktop styling could be a little better, it was one of the last things that I did, and because of that I relied more on selectors rather than classes. 
+
 
 Create a blog where a user may register, sign in, view all blog entries, post new / edit existing / delete existing blog entry, and log out.
 
