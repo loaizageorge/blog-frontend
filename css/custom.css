@@ -65,7 +65,6 @@ body {
 /* Uneven top / bottom margin is intentional based on mockup. */
 .btn-bold {
     display: flex;
-    margin: 0 auto;
     padding: 1rem 2rem;
     margin: 0 auto 1rem auto;
     text-align: center;
@@ -106,12 +105,12 @@ body {
 /* Kicking it old school. Triangle courtesy of http://apps.eky.hk/css-triangle-generator/*/
 .triangle-bottomright {
     position: absolute;
-    bottom: 0%;
-    right: 0%;
+    bottom: 0;
+    right: 0;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 0 75px 150px;
+    border-width: 0 0 45px 150px;
     border-color: transparent transparent var(--brandBlue) transparent;
 }
 
@@ -139,12 +138,18 @@ body {
     color: white;
 }
 /** Post Styles **/
-.posts {
+.post {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--brandBlue);
     padding: .5rem;
     margin-bottom: 1.5rem;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .post-title {

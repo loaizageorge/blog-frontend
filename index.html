@@ -48,7 +48,7 @@
     <template id="signUp">
        <div>
            <form @submit.prevent='onSubmit' ref='form' action="" class='register-form display-container'>
-               <img class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
+               <img alt="wsj banner" class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
                <h2 class="font-bold">New Account</h2>
                <div class="form-group">
                    <label for="firstname">First Name</label>
@@ -80,7 +80,7 @@
     <template id="signinIn">
         <div>
             <form ref='form' @submit.prevent='handleForm' action="" class='signin-form display-container'>
-                <img class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
+                <img alt="wsj banner" class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
                 <h2 class="font-bold">Sign In</h2>
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -102,11 +102,10 @@
            <div class="display-container">
                <div>
                    <ul class="ul-normalize">
-                       <li class="posts" v-for="post in posts" :key="post.id">
-                           <post v-bind:post="post" detailed="false"></post>
-                       </li>
+                       <post v-for="post in posts" :key="post.id" v-bind:post="post"></post>
                    </ul>
                </div>
+               <div class="triangle-bottomright"></div>
            </div>
        </div>
     </template>
@@ -115,7 +114,7 @@
 
     <!-- View Single Post -->
     <template id="post">
-        <div v-if="post" @click="setComponent({currentComponent: 'viewPost', action: 'view', id: post.id})">
+        <li class="post" v-if="post" @click="setComponent({currentComponent: 'viewPost', action: 'view', id: post.id})">
             <h3 class="post-title font-bold">{{post.title}}</h3>
             <div class="post-body">{{post.body}}</div>
             <div class="post-footer">
@@ -128,7 +127,7 @@
                 <button @click.stop="setComponent" @click="setComponent({currentComponent: 'createPost', 'action': 'edit', id: post.id})" class="btn-bold font-bold">Edit Post</button>
                 <button @click="deletePost" class="btn-bold font-bold color-danger">Delete Post</button>
             </div>
-        </div>
+        </li>
     </template>
 
     <!-- Create Post  -->
@@ -144,7 +143,7 @@
                 <textarea v-model="body" required id='body' placeholder="Let the world know what's on your mind"></textarea>
             </div>
             <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Save Post">
-            <div class="triangle-bottomright"/>
+            <div class="triangle-bottomright"></div>
         </form>
     </template>
 
@@ -198,19 +197,21 @@
         in the mock ups. Please style these screens so they align
         with the rest of the designs.
       -->
-      <div class="feedback display-container">
-        <header>
-          <h2>{{ title }}</h2>
-        </header>
-        <div v-if='feedback.type === "register"'>
-          <h3>Welcome <strong>{{ feedback.data | name }}</strong>!</h3>
-			    <p>You may now sign in.</p>
-          <p>Please check the email address provided - {{feedback.data | email}} - to complete your registration.</p>
+        <div class="feedback display-container">
+            <header>
+                <h2>{{ title }}</h2>
+            </header>
+            <div v-if='feedback.type === "register"'>
+                <h3>Welcome <strong>{{ feedback.data | name }}</strong>!</h3>
+                <p>You may now sign in.</p>
+                <p>Please check the email address provided - {{feedback.data | email}} - to complete your
+                    registration.</p>
+            </div>
+            <div v-else>
+                <p>Logging in...</p>
+            </div>
+            <div class="triangle-bottomright"></div>
         </div>
-        <div v-else>
-          <p>Logging in...</p>
-        </div>
-      </div>
     </template>
   </body>
   
