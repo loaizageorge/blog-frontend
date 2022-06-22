@@ -35,9 +35,10 @@ $(document).ready(function() {
     app.currentComponent = currentComponent;
     app.action = action;
     app.id = id;
+    app.componentKey +=1;
   }
 
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
   const registerComponent = {
     template: '#signUp',
@@ -73,19 +74,14 @@ $(document).ready(function() {
         switch (prop) {
           case 'firstname':
             return this.user.firstname.length >= 2;
-            break;
           case 'lastname':
             return this.user.lastname.length >= 2;
-            break;
           case 'email':
             return emailRegex.test(this.user.email);
-            break;
           case 'password':
             return this.user.password.length >= 6;
-            break;
           case 'passwordCheck':
             return this.user.password === this.user.passwordCheck;
-            break;
           default:
             return false;
         }
@@ -205,10 +201,8 @@ $(document).ready(function() {
         switch (prop) {
           case 'email':
             return emailRegex.test(this.user.email);
-            break;
           case 'password':
             return this.user.password.length >= 6;
-            break;
           default:
             return false;
         }
@@ -476,6 +470,7 @@ $(document).ready(function() {
         id: '',
         // global variable
         user: null,
+        componentKey: 0
       };
     },
     methods: {

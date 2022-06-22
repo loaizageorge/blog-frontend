@@ -34,7 +34,7 @@
         <!-- Screens -->
         <transition name='form' mode='out-in'>
             <keep-alive>
-                <component :user="user" :feedback='feedback' :is="currentComponent" @register-form='handleForm' @signin-form='handleForm'></component>
+                <component :key="componentKey" :user="user" :feedback='feedback' :is="currentComponent" @register-form='handleForm' @signin-form='handleForm'></component>
             </keep-alive>
         </transition>
     </div>
@@ -104,8 +104,6 @@
            </div>
        </div>
     </template>
-
-
 
     <!-- View Single Post -->
     <template id="post">
