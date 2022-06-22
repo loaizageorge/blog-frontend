@@ -7,95 +7,115 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/custom.css">
     <script src="js/jquery.min.js"></script>
-    <script src="js/vue.min.js"></script>
+<!--    <script src="js/vue.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="js/login.js"></script>
     <script src="js/scripts.js"></script>
 </head>
 <body class="container">
-    <h1>Register</h1>
     <div class="center" id="app" v-cloak>
-		
-		<!-- Login / Register Toggles -->
-      <div class="actions">
-        <button class="btn-tab font-bold" :class='[{ active: isDisabled("signin"), "color-primary": currentComponent === "signin" }]' @click='setView("signin")'>Sign In
-        </button>
-        <button class="btn-tab font-bold" :class='[{ active: isDisabled("register"), "color-primary": currentComponent === "register" }]' @click='setView("register")'>Register
-        </button>
-      </div>
-		
-		<!-- Screens -->
-      <transition name='form' mode='out-in'>
-        <keep-alive>
-          <component :feedback='feedback' :is="currentComponent" @register-form='handleForm' @signin-form='handleForm'></component>
-        </keep-alive>
-      </transition>
-  
+        <h1>Register</h1>
+        <div class="actions">
+            <div class="display-flex-row" v-if="user">
+                <button class="btn-tab font-bold" @click='logout'>Logout
+                </button>
+                <button class="btn-tab font-bold" @click='setComponent({currentComponent: "posts"})'>View All Posts
+                </button>
+                <button class="btn-tab font-bold" @click='setComponent({currentComponent: "createPost"})'>Create Post
+                </button>
+            </div>
+            <div class="display-flex-row" v-else>
+            <button class="btn-tab font-bold" @click='setComponent({currentComponent: "signin"})'>Sign In</button>
+            <button class="btn-tab font-bold" @click='setComponent({currentComponent: "register"})'>Register</button>
+            </div>
+
+        </div>
+
+        <!-- Screens -->
+        <transition name='form' mode='out-in'>
+            <keep-alive>
+                <component :user="user" :feedback='feedback' :is="currentComponent" @register-form='handleForm' @signin-form='handleForm'></component>
+            </keep-alive>
+        </transition>
     </div>
+    <!-- Login / Register Toggles -->
+    <template id="actions">
+
+    </template>
+
   
     <!-- Sign Up  -->
     <template id="signUp">
-      <form @submit.prevent='onSubmit' ref='form' action="" class='register-form'>
-        <img class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
-        <h2 class="font-bold">New Account</h2>
-        <div class="form-group">
-          <label for="firstname">First Name</label>
-          <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="first name">
-        </div>
-        <div class="form-group">
-          <label for="lastname">Last Name</label>
-          <input required type="text" v-model.trim='user.lastname' id='lastname' placeholder="last name">
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input required type="email" v-model.trim='user.email' id='email' placeholder="email">
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input required type="password" v-model='user.password' placeholder="password" id='password' v-bind:class="[ user.password.length != 0 && user.password != user.passwordCheck ? 'invalid' : 'valid' ]">
-        </div>
-        <div class="form-group">
-          <label for="passwordcheck">Confirm Password</label>
-          <input required type="password" v-model='user.passwordCheck' placeholder="confirm password" id='passwordcheck' v-bind:class="[ user.password != user.passwordCheck ? 'invalid' : 'valid' ]">
-        </div>
-        <input class="btn-bold font-bold" type="submit" :disabled='!isFormValid' value='Register'>
-          <div class="triangle-bottomright"/>
-      </form>
+       <div>
+           <form @submit.prevent='onSubmit' ref='form' action="" class='register-form display-container'>
+               <img class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
+               <h2 class="font-bold">New Account</h2>
+               <div class="form-group">
+                   <label for="firstname">First Name</label>
+                   <input required type="text" v-model.trim='user.firstname' id='firstname' placeholder="first name">
+               </div>
+               <div class="form-group">
+                   <label for="lastname">Last Name</label>
+                   <input required type="text" v-model.trim='user.lastname' id='lastname' placeholder="last name">
+               </div>
+               <div class="form-group">
+                   <label for="email">Email</label>
+                   <input required type="email" v-model.trim='user.email' id='email' placeholder="email">
+               </div>
+               <div class="form-group">
+                   <label for="password">Password</label>
+                   <input required type="password" v-model='user.password' placeholder="password" id='password' v-bind:class="[ user.password.length != 0 && user.password != user.passwordCheck ? 'invalid' : 'valid' ]">
+               </div>
+               <div class="form-group">
+                   <label for="passwordcheck">Confirm Password</label>
+                   <input required type="password" v-model='user.passwordCheck' placeholder="confirm password" id='passwordcheck' v-bind:class="[ user.password != user.passwordCheck ? 'invalid' : 'valid' ]">
+               </div>
+               <input class="btn-bold font-bold" type="submit" :disabled='!isFormValid' value='Register'>
+               <div class="triangle-bottomright"></div>
+           </form>
+       </div>
     </template>
   
     <!-- Sign In  -->
     <template id="signinIn">
-      <form ref='form' @submit.prevent='handleForm' action="" class='signin-form'>
-        <img class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
-        <h2 class="font-bold">Sign In</h2>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input required v-model='user.email' type="email" id='email' placeholder="email">
+        <div>
+            <form ref='form' @submit.prevent='handleForm' action="" class='signin-form display-container'>
+                <img class="banner" src="/assets_from_client/assets/WSJ_Horizontal.png"/>
+                <h2 class="font-bold">Sign In</h2>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input required v-model='user.email' type="email" id='email' placeholder="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input required v-model='user.password' type="password" id='password' placeholder="password">
+                </div>
+                <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Sign In">
+                <div class="triangle-bottomright"></div>
+            </form>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input required v-model='user.password' type="password" id='password' placeholder="password">
-        </div>
-        <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Sign In">
-          <div class="triangle-bottomright"/>
-      </form>
     </template>
 
     <!-- View All Posts -->
     <template id="posts">
-        <div>
-            <ul>
-                <li class="posts" v-for="post in posts" key="post.id">
-                    <post v-bind:post="post" detailed="false"></post>
-                </li>
-            </ul>
-        </div>
+       <div>
+           <div class="display-container">
+               <div>
+                   <ul class="ul-normalize">
+                       <li class="posts" v-for="post in posts" key="post.id">
+                           <post v-bind:post="post" detailed="false"></post>
+                       </li>
+                   </ul>
+               </div>
+           </div>
+       </div>
     </template>
 
 
 
     <!-- View Single Post -->
     <template id="post">
-        <div v-if="post">
+        <div v-if="post" @click="setComponent({currentComponent: 'viewPost', action: 'view', id: post.id})">
             <h3 class="post-title font-bold">{{post.title}}</h3>
             <div class="post-body">{{post.body}}</div>
             <div class="post-footer">
@@ -103,13 +123,18 @@
                 <span v-if="post.comments.length">{{post.comments.length}} comment{{post.comments.length > 1 ? 's' : ''}}</span>
                 <span v-else>No comments</span>
             </div>
+            <!-- Only the user that created the post will be able to edit/ delete the post -->
+            <div v-if="post.user.id === userId" class="post-actions display-flex-row ">
+                <button @click.stop="setComponent" @click="setComponent({currentComponent: 'createPost', 'action': 'edit', id: post.id})" class="btn-bold font-bold">Edit Post</button>
+                <button @click="deletePost" class="btn-bold font-bold color-danger">Delete Post</button>
+            </div>
         </div>
     </template>
 
     <!-- Create Post  -->
     <template id="createPost">
-        <form @submit.prevent='handleSubmit' ref='form' action="">
-            <h2 class="font-bold">Create Post</h2>
+        <form class="display-container" @submit.prevent='handleSubmit' ref='form' action="">
+            <h2 class="font-bold">{{action === 'edit'? 'Edit' : 'Create'}} Post</h2>
             <div class="form-group">
                 <label for="title">Title</label>
                 <input v-model="title" required type="text" id='title' placeholder="Title">
@@ -118,19 +143,19 @@
                 <label for="body">Body</label>
                 <textarea v-model="body" required id='body' placeholder="Let the world know what's on your mind"></textarea>
             </div>
-            <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Create post">
+            <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Save Post">
             <div class="triangle-bottomright"/>
         </form>
     </template>
 
     <!-- Detailed Post  -->
     <template id="viewPost">
-       <div class="display-container" v-on:addComment="addComment">
-           <post v-bind:post="post" detailed="true"></post>
+       <div class="display-container">
+           <post v-bind:post="post" detailed="true" v-bind:user-id="user ? user.id : ''"></post>
            <work v-bind:post-id="post ? post.id : ''"></work>
            <div class="comments" v-if="post">
                <div v-for="comment in post.comments" key="comment.id">
-                   <comment v-bind:comment="comment"></comment>
+                   <comment v-bind:comment="comment" v-bind:user-id="user ? user.id : ''"></comment>
                </div>
            </div>
        </div>
@@ -138,11 +163,11 @@
 
     <!-- Create Comment -> TODO: figure out how to get it named properly -->
     <template id="work">
-        <form @submit.prevent='handleSubmit' ref='form' action="">
+        <form v-bind:class="{'display-container': action === 'edit'}" @submit.prevent='handleSubmit' ref='form' action="">
             <div class="form-group">
                 <textarea v-model="body" required id='body' placeholder="Leave a comment"></textarea>
             </div>
-            <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Add comment">
+            <input class="btn-bold font-bold" :disabled='!isFormValid' type="submit" value="Save comment">
             <div class="triangle-bottomright"/>
         </form>
     </template>
@@ -153,6 +178,11 @@
             <span>{{comment.body}}</span>
             <div class="post-footer">
                 <span>Posted by {{comment.user.name}} at {{comment.created_at}}</span>
+            </div>
+            <!-- Only the user that created the comment will be able to edit/ delete it -->
+            <div v-if="comment.user.id === userId" class="post-actions display-flex-row flex-space">
+                <button @click="setComponent({currentComponent: 'work', 'action': 'edit', id: comment.id})" class="btn-small font-bold">Edit Comment</button>
+                <button @click="deleteComment" class="btn-small font-bold color-danger">Delete Comment</button>
             </div>
         </div>
     </template>
@@ -165,10 +195,10 @@
         
         When a user has successfully registered or signed up, 
         there is a third feedback screen which is not included
-        in the mock ups. Please style these screens so they align 
+        in the mock ups. Please style these screens so they align
         with the rest of the designs.
       -->
-      <div class="feedback">
+      <div class="feedback display-container">
         <header>
           <h2>{{ title }}</h2>
         </header>

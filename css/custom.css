@@ -71,6 +71,11 @@ body {
     text-align: center;
 }
 
+.btn-small {
+    display: flex;
+    text-align: center;
+}
+
 .btn-tab {
     padding: 1rem 2rem;
     text-align: center;
@@ -84,6 +89,11 @@ body {
     font-family: var(--fontBold);
     text-transform: uppercase;
     letter-spacing: 2px;
+}
+
+.ul-normalize {
+    margin: 0;
+    padding: 0;
 }
 
 /* Component Styles */
@@ -115,6 +125,19 @@ body {
     background: #e5e0e0;
 }
 
+.display-flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-space {
+    justify-content: space-around;
+}
+
+.color-danger {
+    background-color: red;
+    color: white;
+}
 /** Post Styles **/
 .posts {
     display: flex;
