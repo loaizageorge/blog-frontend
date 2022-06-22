@@ -313,15 +313,14 @@ $(document).ready(function() {
   };
 
   // Comment component
-  const work = {
-    template: '#work',
-    name: 'work',
+  const createCommentComponent = {
+    template: '#createComment',
+    name: 'createCommentComponent',
     props: ['postId'],
     data() {
       return {
         id: '',
         body: '',
-        postId: '',
         action: '',
       };
     },
@@ -335,7 +334,6 @@ $(document).ready(function() {
         const comment = await response.json();
         this.id = comment.data.id;
         this.body = comment.data.body;
-        this.postId = comment.data.post_id;
       }
     },
     methods: {
@@ -412,7 +410,7 @@ $(document).ready(function() {
     template: '#viewPost',
     name: 'viewPostComponent',
     components: {
-      work: work,
+      createcomment: createCommentComponent,
       post: postComponent,
       comment: commentComponent,
     },
@@ -459,7 +457,7 @@ $(document).ready(function() {
       posts: postsComponent,
       post: postComponent,
       createPost: createPostComponent,
-      work: work,
+      createComment: createCommentComponent,
       viewPost: viewPostComponent,
       comment: commentComponent,
     },

@@ -173,4 +173,5 @@ ul {
 .comment {
     border-top: 1px solid var(--brandBlue);
     padding: .25rem;
+    margin: .5rem 0;
 }

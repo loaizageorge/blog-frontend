@@ -146,7 +146,7 @@
     <template id="viewPost">
        <div class="display-container">
            <post v-bind:post="post" detailed="true" v-bind:user-id="user ? user.id : ''"></post>
-           <work v-bind:post-id="post ? post.id : ''"></work>
+           <createcomment v-bind:post-id="post ? post.id : ''"></createcomment>
            <div class="comments" v-if="post">
                <div v-for="comment in post.comments" :key="comment.id">
                    <comment v-bind:comment="comment" v-bind:user-id="user ? user.id : ''"></comment>
@@ -155,8 +155,8 @@
        </div>
     </template>
 
-    <!-- Create Comment -> TODO: figure out how to get it named properly -->
-    <template id="work">
+    <!-- Create Comment -->
+    <template id="createComment">
         <form v-bind:class="{'display-container': action === 'edit'}" @submit.prevent='handleSubmit' ref='form' action="">
             <div class="form-group">
                 <textarea v-model="body" required id='body' placeholder="Leave a comment"></textarea>
@@ -175,7 +175,7 @@
             </div>
             <!-- Only the user that created the comment will be able to edit/ delete it -->
             <div v-if="comment.user.id === userId" class="post-actions display-flex-row flex-space">
-                <button @click="setComponent({currentComponent: 'work', 'action': 'edit', id: comment.id})" class="btn-small font-bold">Edit Comment</button>
+                <button @click="setComponent({currentComponent: 'createComment', 'action': 'edit', id: comment.id})" class="btn-small font-bold">Edit Comment</button>
                 <button @click="deleteComment" class="btn-small font-bold color-danger">Delete Comment</button>
             </div>
         </div>
